@@ -40,9 +40,9 @@ equals是对象值之间的比较，==是对象引用地址之前的比较
 
 ### Java 集合
 ### List 和 Set 区别
-list允许重复元素出现，set不允许重复元素
+list元素有放入顺序，允许重复元素出现，set元素无放入顺序，不允许重复元素（注意：元素虽然无放入顺序，但是元素在 set 中的位置是有该元素的 HashCode 决定的，其位置其实是固定的）
 ### List 和 Map 区别
-list是数组结构的，map则是键值对结构的，数组+链表结构
+list是数组结构的，元素有放入顺序，map则是键值对结构的，无放入顺序 ，数组+链表结构
 ### ArrayList 与 LinkedList 区别
 ArrayList是无序数组，查询的时间复杂度是O（1），插入删除的时间复杂度是O(n)，因为需要重新计算下标，除非是尾插
 linkedlist是链表形式的，查询的时间复杂度是O（n），插入删除的时间复杂度是O(1)
@@ -70,12 +70,37 @@ HashMap 基于 hashing 原理，我们通过 put() 和 get() 方法储存和获�
 2.实现Runnable接口
 3.线程池
 ### sleep() 、join（）、yield（）有什么区别
+sleep()
+sleep() 方法需要指定等待的时间，它可以让当前正在执行的线程在指定的时间内暂停执行，进入阻塞状态，该方法既可以让其他同优先级或者高优先级的线程得到执行的机会，也可以让低优先级的线程得到执行机会。但是 sleep() 方法不会释放“锁标志”，也就是说如果有 synchronized 同步块，其他线程仍然不能访问共享数据。
+
+wait()
+wait() 方法需要和 notify() 及 notifyAll() 两个方法一起介绍，这三个方法用于协调多个线程对共享数据的存取，所以必须在 synchronized 语句块内使用，也就是说，调用 wait()，notify() 和 notifyAll() 的任务在调用这些方法前必须拥有对象的锁。注意，它们都是 Object 类的方法，而不是 Thread 类的方法。
+
+wait() 方法与 sleep() 方法的不同之处在于，wait() 方法会释放对象的“锁标志”。当调用某一对象的 wait() 方法后，会使当前线程暂停执行，并将当前线程放入对象等待池中，直到调用了 notify() 方法后，将从对象等待池中移出任意一个线程并放入锁标志等待池中，只有锁标志等待池中的线程可以获取锁标志，它们随时准备争夺锁的拥有权。当调用了某个对象的 notifyAll() 方法，会将对象等待池中的所有线程都移动到该对象的锁标志等待池。
+
+除了使用 notify() 和 notifyAll() 方法，还可以使用带毫秒参数的 wait(long timeout) 方法，效果是在延迟 timeout 毫秒后，被暂停的线程将被恢复到锁标志等待池。
+
+此外，wait()，notify() 及 notifyAll() 只能在 synchronized 语句中使用，但是如果使用的是 ReenTrantLock 实现同步，该如何达到这三个方法的效果呢？解决方法是使用 ReenTrantLock.newCondition() 获取一个 Condition 类对象，然后 Condition 的 await()，signal() 以及 signalAll() 分别对应上面的三个方法。
+
+yield()
+yield() 方法和 sleep() 方法类似，也不会释放“锁标志”，区别在于，它没有参数，即 yield() 方法只是使当前线程重新回到可执行状态，所以执行 yield() 的线程有可能在进入到可执行状态后马上又被执行，另外 yield() 方法只能使同优先级或者高优先级的线程得到执行机会，这也和 sleep() 方法不同。
+
+join()
+join() 方法会使当前线程等待调用 join() 方法的线程结束后才能继续执行
+### 线程的拒绝策略
+ThreadPoolExecutor.AbortPolicy:丢弃任务并抛出RejectedExecutionException异常。
+ThreadPoolExecutor.DiscardPolicy：丢弃任务，但是不抛出异常。
+ThreadPoolExecutor.DiscardOldestPolicy：丢弃队列最前面的任务，然后重新提交被拒绝的任务
+ThreadPoolExecutor.CallerRunsPolicy：由调用线程（提交任务的线程）处理该任务
 ### 说说 CountDownLatch 原理
 闭锁，CountDownLatch 内部维护了一个整数 n，n（要大于等于0）在 当前线程 初始化 CountDownLatch 方法指定。当前线程调用 CountDownLatch 的 await() 方法阻塞当前线程，等待其他调用 CountDownLatch 对象的 CountDown() 方法的线程执行完毕。 其他线程调用该 CountDownLatch 的 CountDown() 方法，该方法会把 n-1，直到所有线程执行完成，n 等于 0，当前线程 就恢复执行。
+具体实现：countDownLatch.await(); 等待 countDownLatch.countDown(); 开始
 ### 说说 CyclicBarrier 原理
-栅栏
+栅栏，CyclicBarrier 是一个同步辅助类,允许一组线程互相等待,直到到达某个公共屏障点(CommonBarrierPoint)。因为该 barrier 在释放等待线程后可以重用,所以称它为循环的 barrier。
+具体方法：CyclicBarrier.await();
 ### 说说 Semaphore 原理
-信号量
+信号量，Semaphore 直译为信号。实际上 Semaphore 可以看做是一个信号的集合。不同的线程能够从 Semaphore 中获取若干个信号量。当 Semaphore 对象持有的信号量不足时，尝试从 Semaphore 中获取信号的线程将会阻塞。直到其他线程将信号量释放以后，阻塞的线程会被唤醒，重新尝试获取信号量。
+具体方法：semaphore.acquire(); 开始 semaphore.release(); 释放
 ### 说说 Exchanger 原理
 ### 说说 CountDownLatch 与 CyclicBarrier 区别
 ### ThreadLocal 原理分析
@@ -88,11 +113,21 @@ HashMap 基于 hashing 原理，我们通过 put() 和 get() 方法储存和获�
 
 ### Java 锁机制
 ### 说说线程安全问题
+•最简单的方式，使用 Synchronization 关键字
+•使用 java.util.concurrent.atomic 包中的原子类，例如 AtomicInteger
+•使用 java.util.concurrent.locks 包中的锁
+•使用线程安全的集合 ConcurrentHashMap
+•使用 volatile 关键字，保证变量可见性（直接从内存读，而不是从线程 cache 读）
 ### volatile 实现原理
+•在 JVM 底层 volatile 是采用“内存屏障”来实现的
+•缓存一致性协议（MESI协议）它确保每个缓存中使用的共享变量的副本是一致的。其核心思想如下：当某个 CPU 在写数据时，如果发现操作的变量是共享变量，则会通知其他 CPU 告知该变量的缓存行是无效的，因此其他 CPU 在读取该变量时，发现其无效会重新从主存中加载数据
 ### synchronize 实现原理
+同步代码块是使用 monitorenter 和 monitorexit 指令实现的，同步方法（在这看不出来需要看 JVM 底层实现）依靠的是方法修饰符上的 ACC_SYNCHRONIZED 实现。
 ### synchronized 与 lock 的区别
 ### CAS 乐观锁
+compare and swap 比较替换，比较原值和预期值有无区别，如果一致则修改，但可能引起ABA问题
 ### ABA 问题
+一个值经过多次修改，如10→20→10，你比较值一致，但是实际经过了多次修改，可以采用版本号来区分，版本号是一直递增的
 ### 乐观锁的业务场景及实现方式
 
 
@@ -134,6 +169,12 @@ AOF日志文件，秒级的
 主从集群配置，即配置master和slave
 哨兵配置
 ### Redis 为什么是单线程的
+### 缓存雪崩
+大量缓存在同一时间失效，解决方法：可以在过期时间上增加一个随机值；缓存预热
+### 缓存穿透
+布隆过滤器，不在过滤器中的元素直接返回，有误判值（可以设置错误率），已经在过滤器的值一般都会匹配上，误判值一般是不在过滤器内的值，匹配成功放过去了，不过问题不大，Redis中也有自带布隆过滤器，用bf.add和bf.exist操作
+### 缓存穿透
+热点数据失效，导致大量请求打到数据库，解决方案：缓存预热，使用单例或者锁只让一个请求到数据库更新缓存，其他请求阻塞，等缓存更新完成查询缓存
 ### 缓存崩溃
 ### 缓存降级
 ### 使用缓存的合理性问题
@@ -189,6 +230,7 @@ AOF日志文件，秒级的
 ### 前后端分离是如何做的
 ### 如何解决跨域
 ### 微服务哪些框架
+dubbo、springcloud
 ### 你怎么理解 RPC 框架
 ### 说说 RPC 的实现原理
 ### 说说 Dubbo 的实现原理
@@ -197,10 +239,20 @@ AOF日志文件，秒级的
 ### 如何理解 RESTful API 的幂等性
 ### 如何保证接口的幂等性
 ### 说说 CAP 定理、 BASE 理论
+C：一致性 A：可靠性 P：分区容错性
+BASE：eBay 的架构师 Dan Pritchett 源于对大规模分布式系统的实践总结，在 ACM 上发表文章提出 BASE 理论，BASE 理论是对 CAP 理论的延伸，核心思想是即使无法做到强一致性（Strong Consistency，CAP 的一致性就是强一致性），但应用可以采用适合的方式达到最终一致性（Eventual Consitency）。
+基本可用（Basically Available）
+基本可用是指分布式系统在出现故障的时候，允许损失部分可用性，即保证核心可用。
+电商大促时，为了应对访问量激增，部分用户可能会被引导到降级页面，服务层也可能只提供降级服务。这就是损失部分可用性的体现。
+软状态（Soft State）
+软状态是指允许系统存在中间状态，而该中间状态不会影响系统整体可用性。分布式存储中一般一份数据至少会有三个副本，允许不同节点间副本同步的延时就是软状态的体现。mysql replication 的异步复制也是一种体现。
+最终一致性（Eventual Consistency）
+最终一致性是指系统中的所有数据副本经过一定时间后，最终能够达到一致的状态。弱一致性和强一致性相反，最终一致性是弱一致性的一种特殊情况。
 ### 怎么考虑数据一致性问题
 ### 说说最终一致性的实现方案
 ### 你怎么看待微服务
 ### 微服务与 SOA 的区别
+SOA面向服务编程，微服务是其产物
 ### 如何拆分服务
 ### 微服务如何进行数据库管理
 ### 如何应对微服务的链式调用异常
@@ -214,7 +266,9 @@ AOF日志文件，秒级的
 ### 谈谈业务中使用分布式的场景
 ### Session 分布式方案
 ### 分布式锁的场景与实现
+使用Redis中的setnx来实现，springboot里面的Redistemplate则可以使用setifabsent方法来实现，原子性操作，如果没有则设置成功，返回true，如果存在则设置失败，返回false
 ### 分布式事务
+两段式提交，比如一次下单扣库存，你需要操作订单数据库和库存数据库，我用的是springboot，可以使用事务注解（相当于一个事务协调器），如果其中某条SQL执行失败则回滚，也可加入调用支付服务或者其他服务调用失败主动抛出异常的操作
 ### 集群与负载均衡的算法与实现
 
 
