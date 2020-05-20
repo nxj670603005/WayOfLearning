@@ -14,7 +14,8 @@ Integer是int的封装类型，默认值为null
 重载：同一个类中，参数类型或个数不同的同名方法，叫做重载
 重写：子类重写父类的同名方法的具体实现，叫做重写
 ### 抽象类和接口有什么区别
-一个类只能继承一个抽象类，但可以实现多个接口
+抽象类：一个类只能继承一个抽象类，抽象类可以有构造器
+接口：一个类可以实现多个接口，接口不能有构造器
 ### 说说反射的用途及实现
 用于获取类运行时的状态信息，如用于获取类运行日志，获取错误信息等
 ### 说说自定义注解的场景及实现
@@ -23,7 +24,11 @@ GET请求有长度限制，大概为4K的字符长度，而POST没有限制
 ### session 与 cookie 区别
 session是服务器的用户信息，而cookie是用户浏览器存储的用户信息，一般浏览器cookie是有大小限制的
 ### session 分布式处理
-Tomcat可以通过配置来实现多个项目之间的session共享
+在支持 Session 复制的 Web 服务器上，通过修改 Web 服务器的配置，可以实现将 Session 同步到其它 Web 服务器上，达到每个 Web 服务器上都保存一致的 Session，如Tomcat可以通过配置来实现多个项目之间的session共享。
+•优点：代码上不需要做支持和修改。
+•缺点：需要依赖支持的 Web 服务器，一旦更换成不支持的 Web 服务器就不能使用了，在数据量很大的情况下不仅占用网络资源，而且会导致延迟。
+•适用场景：只适用于Web服务器比较少且 Session 数据量少的情况。
+•可用方案：开源方案 tomcat-redis-session-manager，暂不支持 Tomcat8。
 ### JDBC 流程
 ### MVC 设计思想
 MVC设计思想可以把用户端和服务端整个交互流程分为，M（model）数据层，用于存储用户数据，V（view）视图层，用于显示和用户的交互信息，C（controller）控制器，用于处理用户请求
@@ -42,14 +47,18 @@ list是数组结构的，map则是键值对结构的，数组+链表结构
 ArrayList是无序数组，查询的时间复杂度是O（1），插入删除的时间复杂度是O(n)，因为需要重新计算下标，除非是尾插
 linkedlist是链表形式的，查询的时间复杂度是O（n），插入删除的时间复杂度是O(1)
 ### ArrayList 与 Vector 区别
-ArrayList不是线程安全的，Vector是线程安全的，里面加了synchronized锁
+ArrayList：不是线程安全的，扩容为1.5n
+Vector：是线程安全的，里面加了synchronized锁，扩容为2n
 ### HashMap 和 HashTable 的区别
-HashMap：初始大小为16，扩容为0.75的时候，扩容大小为2n，不是线程安全的
+HashMap：初始大小为16，扩容为0.75的时候，扩容大小为2n，不是线程安全的，键值对可以为null，在单一线程下使用，效率较高
 HashTable：初始大小为11，扩容为0.75的时候，扩容大小为2n+1，里面有synchronized结构，是线程安全的，效率较低
 ### HashSet 和 HashMap 区别
+HashMap：实现了 Map 接口，储存键值对，使用键对象来计算 hashcode 值
+HashSet：实现了 Set 接口，仅仅存储对象，使用 add() 方法将元素放入 set 中，HashSet 使用成员对象来计算 hashcode 值，对于两个对象来说 hashcode 可能相同，所以 equals() 方法用来判断对象的相等性，如果两个对象不同的话，那么返回 false
 ### HashMap 和 ConcurrentHashMap 的区别
-HashMap不是线程安全的，ConcurrentHashMap采用了分段锁结构，默认为16
+HashMap不是线程安全的，ConcurrentHashMap采用了分段锁结构，默认为16，两者都继承了AbstractMap
 ### HashMap 的工作原理及代码实现
+HashMap 基于 hashing 原理，我们通过 put() 和 get() 方法储存和获取对象。当我们将键值对传递给 put() 方法时，它调用键对象的 hashCode() 方法来计算 hashcode，让后找到 bucket 位置来储存值对象。当获取对象时，通过键对象的 equals() 方法找到正确的键值对，然后返回值对象。HashMap 使用链表来解决碰撞问题，当发生碰撞了，对象将会储存在链表的下一个节点中。 HashMap 在每个链表节点中储存键值对对象。
 ### ConcurrentHashMap 的工作原理及代码实现
 
 
@@ -62,7 +71,7 @@ HashMap不是线程安全的，ConcurrentHashMap采用了分段锁结构，默�
 3.线程池
 ### sleep() 、join（）、yield（）有什么区别
 ### 说说 CountDownLatch 原理
-闭锁，使用await方法是线程进入等待状态，直到countdown方法执行
+闭锁，CountDownLatch 内部维护了一个整数 n，n（要大于等于0）在 当前线程 初始化 CountDownLatch 方法指定。当前线程调用 CountDownLatch 的 await() 方法阻塞当前线程，等待其他调用 CountDownLatch 对象的 CountDown() 方法的线程执行完毕。 其他线程调用该 CountDownLatch 的 CountDown() 方法，该方法会把 n-1，直到所有线程执行完成，n 等于 0，当前线程 就恢复执行。
 ### 说说 CyclicBarrier 原理
 栅栏
 ### 说说 Semaphore 原理
@@ -114,11 +123,16 @@ HashMap不是线程安全的，ConcurrentHashMap采用了分段锁结构，默�
 
 ### 缓存使用
 ### Redis 有哪些类型
+String、list、hash、set、zset
 ### Redis 内部结构
 ### Redis 内存淘汰机制
 ### 聊聊 Redis 使用场景
 ### Redis 持久化机制
+RDB内存快照，5分钟一次
+AOF日志文件，秒级的
 ### Redis 集群方案与实现
+主从集群配置，即配置master和slave
+哨兵配置
 ### Redis 为什么是单线程的
 ### 缓存崩溃
 ### 缓存降级
