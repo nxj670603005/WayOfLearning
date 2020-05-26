@@ -198,15 +198,40 @@ AOF日志文件，秒级的
 ### Spring Bean 的生命周期
 ### Spring IOC 如何实现
 ### 说说 Spring AOP
+面向切面编程，在我们的应用中，经常需要做一些事情，但是这些事情与核心业务无关，比如，要记录所有 update 方法的执行时间时间，操作人等等信息，记录到日志，
+通过 Spring 的 AOP 技术，就可以在不修改 update 的代码的情况下完成该需求。
 ### Spring AOP 实现原理
+Spring AOP 中的动态代理主要有两种方式，JDK 动态代理 和 CGLIB 动态代理。JDK 动态代理通过反射来接收被代理的类，并且要求被代理的类必须实现一个接口。JDK 动态代理的核心是 InvocationHandler 接口和 Proxy 类。
+
+如果目标类没有实现接口，那么 Spring AOP 会选择使用 CGLIB 来动态代理目标类。CGLIB（Code Generation Library），是一个代码生成的类库，可以在运行时动态的生成某个类的子类，注意，CGLIB 是通过继承的方式做的动态代理，因此如果某个类被标记为 final，那么它是无法使用 CGLIB 做动态代理的。
 ### 动态代理（CGLIB 与 JDK）
 ### Spring 事务实现方式
+编码方式
+所谓编程式事务指的是通过编码方式实现事务，即类似于 JDBC 编程实现事务管理。
+
+声明式事务管理方式
+声明式事务管理又有两种实现方式：
+•基于 xml 配置文件的方式；
+•另一个实在业务方法上进行 @Transaction 注解，将事务规则应用到业务逻辑中；
 ### Spring 事务底层原理
 ### 如何自定义注解实现功能
 ### Spring MVC 运行流程
+•Spring MVC 将所有的请求都提交给 DispatcherServlet，它会委托应用系统的其他模块负责对请求进行真正的处理工作。
+•DispatcherServlet 查询一个或多个 HandlerMapping，找到处理请求的 Controller.
+•DispatcherServlet 请求提交到目标 Controller
+•Controller 进行业务逻辑处理后，会返回一个 ModelAndView
+•Dispatcher 查询一个或多个 ViewResolver 视图解析器,找到 ModelAndView 对象指定的视图对象
+•视图对象负责渲染返回给客户端。
 ### Spring MVC 启动流程
 ### Spring 的单例实现原理
 ### Spring 框架中用到了哪些设计模式
+•代理模式：在 AOP 和 Remoting 中被用的比较多。
+•单例模式：在 Spring 配置文件中定义的 Bean 默认为单例模式。
+•模板方法：用来解决代码重复的问题。比如. RestTemplate, JmsTemplate, JpaTemplate。
+•前端控制器：Spring 提供了 DispatcherServlet 来对请求进行分发。
+•视图帮助(View Helper )：Spring 提供了一系列的 JSP 标签，高效宏来辅助将分散的代码整合在视图里。
+•依赖注入：贯穿于 BeanFactory / ApplicationContext 接口的核心理念。
+•工厂模式：BeanFactory 用来创建对象的实例。
 ### Spring 其他产品（Spring Boot、Spring Cloud、Spring Security、Spring Data、Spring AMQP 等）
 
 
@@ -234,6 +259,10 @@ dubbo、springcloud
 ### 你怎么理解 RPC 框架
 ### 说说 RPC 的实现原理
 ### 说说 Dubbo 的实现原理
+Dubbo 作为 RPC 框架，实现的效果就是调用远程的方法就像在本地调用一样。如何做到呢？
+I.本地有对远程方法的描述，包括方法名、参数、返回值，在 Dubbo 中是远程和本地使用同样的接口
+II.要有对网络通信的封装，要对调用方来说通信细节是完全不可见的，网络通信要做的就是将调用方法的属性通过一定的协议（简单来说就是消息格式）传递到服务端
+III.服务端按照协议解析出调用的信息；执行相应的方法；在将方法的返回值通过协议传递给客户端；客户端再解析；在调用方式上又可以分为同步调用和异步调用；
 ### 你怎么理解 RESTful
 ### 说说如何设计一个良好的 API
 ### 如何理解 RESTful API 的幂等性
