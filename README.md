@@ -202,7 +202,17 @@ AOF日志文件，秒级的
 ### Spring
 ### BeanFactory 和 ApplicationContext 有什么区别
 ### Spring Bean 的生命周期
+•Spring Bean 的生命周期简单易懂。在一个 bean 实例被初始化时，需要执行一系列的初始化操作以达到可用的状态。同样的，当一个 bean 不在被调用时需要进行相关的析构操作，并从 bean 容器中移除。
+•Spring bean factory 负责管理在 spring 容器中被创建的 bean 的生命周期。Bean 的生命周期由两组回调（call back）方法组成。◦初始化之后调用的回调方法。
+◦销毁之前调用的回调方法。
+•Spring 框架提供了以下四种方式来管理 bean 的生命周期事件：◦InitializingBean 和 DisposableBean 回调接口
+◦针对特殊行为的其他 Aware 接口
+◦Bean 配置文件中的 Custom init() 方法和 destroy() 方法
+◦@PostConstruct 和 @PreDestroy 注解方式
 ### Spring IOC 如何实现
+•Spring 中的 org.springframework.beans 包和 org.springframework.context 包构成了 Spring 框架 IoC 容器的基础。
+•BeanFactory 接口提供了一个先进的配置机制，使得任何类型的对象的配置成为可能。ApplicationContext 接口对 BeanFactory（是一个子接口）进行了扩展，在 BeanFactory 的基础上添加了其他功能，比如与 Spring 的 AOP 更容易集成，也提供了处理 message resource 的机制（用于国际化）、事件传播以及应用层的特别配置，比如针对 Web 应用的 WebApplicationContext。
+•org.springframework.beans.factory.BeanFactory 是 Spring IoC 容器的具体实现，用来包装和管理前面提到的各种 bean。BeanFactory 接口是 Spring IoC 容器的核心接口。
 ### 说说 Spring AOP
 面向切面编程，在我们的应用中，经常需要做一些事情，但是这些事情与核心业务无关，比如，要记录所有 update 方法的执行时间时间，操作人等等信息，记录到日志，
 通过 Spring 的 AOP 技术，就可以在不修改 update 的代码的情况下完成该需求。
@@ -212,10 +222,10 @@ Spring AOP 中的动态代理主要有两种方式，JDK 动态代理 和 CGLIB 
 如果目标类没有实现接口，那么 Spring AOP 会选择使用 CGLIB 来动态代理目标类。CGLIB（Code Generation Library），是一个代码生成的类库，可以在运行时动态的生成某个类的子类，注意，CGLIB 是通过继承的方式做的动态代理，因此如果某个类被标记为 final，那么它是无法使用 CGLIB 做动态代理的。
 ### 动态代理（CGLIB 与 JDK）
 ### Spring 事务实现方式
-编码方式
+编码方式：
 所谓编程式事务指的是通过编码方式实现事务，即类似于 JDBC 编程实现事务管理。
 
-声明式事务管理方式
+声明式事务管理方式：
 声明式事务管理又有两种实现方式：
 •基于 xml 配置文件的方式；
 •另一个实在业务方法上进行 @Transaction 注解，将事务规则应用到业务逻辑中；
