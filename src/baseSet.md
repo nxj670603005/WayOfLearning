@@ -1,0 +1,10 @@
+1. Collection
+    - List
+        - LinkedList
+        - ArrayList
+        - Vector
+    - Set
+2. Map
+    - Hashtable
+    - HashMap
+    - WeakHashMap
