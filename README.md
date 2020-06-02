@@ -106,6 +106,10 @@ HashMap 基于 hashing 原理，我们通过 put() 和 get() 方法储存和获�
 ### ThreadLocal 原理分析
 ### 讲讲线程池的实现原理
 ### 线程池的几种方式与使用场景
+1. newCachedThreadPool ：缓存线程池，如果线程池长度超过处理需要，可回收空闲线程，若无可回收，则新建线程。
+2. newFixedThreadPool ： 定长线程池，可控制线程最大并发数，超出的线程会在队列中等待。
+3. newScheduledThreadPool ： 计划线程池，支持定时及周期性任务执行。
+4. newSingleThreadExecutor ：单线程线程池，用唯一的线程来执行任务，保证所有任务按照指定顺序(FIFO, LIFO, 优先级)执行
 ### 线程的生命周期
 
 ## Java 锁机制
