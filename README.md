@@ -152,7 +152,7 @@ compare and swap 比较替换，比较原值和预期值有无区别，如果一
 ### 聊聊 MongoDB 使用场景
 ### 倒排索引
 ### 聊聊 ElasticSearch 使用场景
-
+### [测试resultType和resultMap](https://www.cnblogs.com/nxjblog/p/13040019.html)
 
 
 
