@@ -6,7 +6,7 @@
 2. 继承：可以使用现有类的所有功能，并在无需重新编写原来的类的情况下对这些功能进行扩展。
 3. 多态：允许将子类类型的指针赋值给父类类型的指针。实现多态，有二种方式，覆盖，重载。
 ### [集合](src/baseSet.md)
-### [JVM内存区域](str/jvm.md)
+### [JVM内存区域](src/jvm.md)
 ### final, finally, finalize 的区别
 1. final：声明一个类或方法不可被修改、继承
 2. finally：配合try catch使用，finally中的语句一定会被执行
