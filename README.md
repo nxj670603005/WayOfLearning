@@ -145,6 +145,7 @@ compare and swap 比较替换，比较原值和预期值有无区别，如果一
 ### 58 到家 MySQL 军规升级版（如何优化 MySQL）
 ### [MySQL 索引使用的注意事项](src/index.md)
 ### [MySQL一、二级缓存](src/sqlCache.md)
+### [MySQL事务]（src/affair.md） 
 ### 说说反模式设计
 ### 说说分库与分表设计
 ### 分库与分表带来的分布式困境与应对之策
