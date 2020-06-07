@@ -13,4 +13,5 @@
     - 开启步骤
     1. 开启全局缓存配置。<settings><setting name="cacheEnabled" value="true"/></settings>，也可注解开启
     2. 因为是namespace级别，需要搭配每个xxxMapper.xml中配置二级缓存<cache></cache>
+    - 不同namespace的二级缓存可能存在脏读，脏写的情况，应该避免使用，而是去使用Redis等缓存中间件
 3. 缓存首先一进来去查二级缓存，二级缓存没有去找一级缓存，一级缓存没有去找数据库。二级缓存----->一级缓存-------->数据库。
