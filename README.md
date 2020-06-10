@@ -30,6 +30,12 @@ Java只支持单继承，实现多重继承三种方式：
 3. GET请求有长度限制，一般为1024字节（因为是通过URL提交数据，浏览器限制，不同浏览器限制不同），而POST没有限制
 ### session 与 cookie 区别
 session是服务器的用户信息，而cookie是用户浏览器存储的用户信息，一般浏览器cookie是有大小限制的，单个cookie 保存的数据不能超过4K，很多浏览器都限制一个站点最多保存20个cookie。
+### 单点登录SSO（Single Sign On）
+1. Tomcat不同项目之前session共享
+2. 抽取出登录系统
+    - SSO系统生成一个token，并将用户信息存到Redis中，并设置过期时间
+    - 其他系统请求SSO系统进行登录，得到SSO返回的token，写到Cookie中
+    - 每次请求时，Cookie都会带上，拦截器得到token，判断是否已经登录
 ### session 分布式处理
 1. 在支持 Session 复制的 Web 服务器上，通过修改 Web 服务器的配置，可以实现将 Session 同步到其它 Web 服务器上，达到每个 Web 服务器上都保存一致的 Session，如Tomcat可以通过配置来实现多个项目之间的session共享。
 2. 优点：代码上不需要做支持和修改。
