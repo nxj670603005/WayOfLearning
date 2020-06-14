@@ -223,9 +223,9 @@ String、list、hash、set、zset
 ◦Bean 配置文件中的 Custom init() 方法和 destroy() 方法
 ◦@PostConstruct 和 @PreDestroy 注解方式
 ### Spring IOC 如何实现
-•Spring 中的 org.springframework.beans 包和 org.springframework.context 包构成了 Spring 框架 IoC 容器的基础。
-•BeanFactory 接口提供了一个先进的配置机制，使得任何类型的对象的配置成为可能。ApplicationContext 接口对 BeanFactory（是一个子接口）进行了扩展，在 BeanFactory 的基础上添加了其他功能，比如与 Spring 的 AOP 更容易集成，也提供了处理 message resource 的机制（用于国际化）、事件传播以及应用层的特别配置，比如针对 Web 应用的 WebApplicationContext。
-•org.springframework.beans.factory.BeanFactory 是 Spring IoC 容器的具体实现，用来包装和管理前面提到的各种 bean。BeanFactory 接口是 Spring IoC 容器的核心接口。
+1. Spring 中的 org.springframework.beans 包和 org.springframework.context 包构成了 Spring 框架 IoC 容器的基础。
+2. BeanFactory 接口提供了一个先进的配置机制，使得任何类型的对象的配置成为可能。ApplicationContext 接口对 BeanFactory（是一个子接口）进行了扩展，在 BeanFactory 的基础上添加了其他功能，比如与 Spring 的 AOP 更容易集成，也提供了处理 message resource 的机制（用于国际化）、事件传播以及应用层的特别配置，比如针对 Web 应用的 WebApplicationContext。
+3. org.springframework.beans.factory.BeanFactory 是 Spring IoC 容器的具体实现，用来包装和管理前面提到的各种 bean。BeanFactory 接口是 Spring IoC 容器的核心接口。
 ### 说说 Spring AOP
 面向切面编程，在我们的应用中，经常需要做一些事情，但是这些事情与核心业务无关，比如，要记录所有 update 方法的执行时间时间，操作人等等信息，记录到日志，
 通过 Spring 的 AOP 技术，就可以在不修改 update 的代码的情况下完成该需求。
@@ -243,22 +243,22 @@ Spring AOP 中的动态代理主要有两种方式，JDK 动态代理 和 CGLIB 
 ### Spring 事务底层原理
 ### 如何自定义注解实现功能
 ### Spring MVC 运行流程
-•Spring MVC 将所有的请求都提交给 DispatcherServlet，它会委托应用系统的其他模块负责对请求进行真正的处理工作。
-•DispatcherServlet 查询一个或多个 HandlerMapping，找到处理请求的 Controller.
-•DispatcherServlet 请求提交到目标 Controller
-•Controller 进行业务逻辑处理后，会返回一个 ModelAndView
-•Dispatcher 查询一个或多个 ViewResolver 视图解析器,找到 ModelAndView 对象指定的视图对象
-•视图对象负责渲染返回给客户端。
+1. Spring MVC 将所有的请求都提交给 DispatcherServlet，它会委托应用系统的其他模块负责对请求进行真正的处理工作。
+2. DispatcherServlet 查询一个或多个 HandlerMapping，找到处理请求的 Controller.
+3. DispatcherServlet 请求提交到目标 Controller
+4. Controller 进行业务逻辑处理后，会返回一个 ModelAndView
+5. Dispatcher 查询一个或多个 ViewResolver 视图解析器,找到 ModelAndView 对象指定的视图对象
+6. 视图对象负责渲染返回给客户端。
 ### Spring MVC 启动流程
 ### Spring 的单例实现原理
 ### Spring 框架中用到了哪些设计模式
-•代理模式：在 AOP 和 Remoting 中被用的比较多。
-•单例模式：在 Spring 配置文件中定义的 Bean 默认为单例模式。
-•模板方法：用来解决代码重复的问题。比如. RestTemplate, JmsTemplate, JpaTemplate。
-•前端控制器：Spring 提供了 DispatcherServlet 来对请求进行分发。
-•视图帮助(View Helper )：Spring 提供了一系列的 JSP 标签，高效宏来辅助将分散的代码整合在视图里。
-•依赖注入：贯穿于 BeanFactory / ApplicationContext 接口的核心理念。
-•工厂模式：BeanFactory 用来创建对象的实例。
+1. 代理模式：在 AOP 和 Remoting 中被用的比较多。
+2. 单例模式：在 Spring 配置文件中定义的 Bean 默认为单例模式。
+3. 模板方法：用来解决代码重复的问题。比如. RestTemplate, JmsTemplate, JpaTemplate。
+4. 前端控制器：Spring 提供了 DispatcherServlet 来对请求进行分发。
+5. 视图帮助(View Helper )：Spring 提供了一系列的 JSP 标签，高效宏来辅助将分散的代码整合在视图里。
+6. 依赖注入：贯穿于 BeanFactory / ApplicationContext 接口的核心理念。
+7. 工厂模式：BeanFactory 用来创建对象的实例。
 ### Spring 其他产品（Spring Boot、Spring Cloud、Spring Security、Spring Data、Spring AMQP 等）
 
 
