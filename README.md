@@ -31,6 +31,7 @@ Java只支持单继承，实现多重继承三种方式：
 3. GET请求有长度限制，一般为1024字节（因为是通过URL提交数据，浏览器限制，不同浏览器限制不同），而POST没有限制
 ### session 与 cookie 区别
 session是服务器的用户信息，而cookie是用户浏览器存储的用户信息，一般浏览器cookie是有大小限制的，单个cookie 保存的数据不能超过4K，很多浏览器都限制一个站点最多保存20个cookie。
+### [简单的秒杀场景设计](src/seckill.md)
 ### 单点登录SSO（Single Sign On）
 1. Tomcat不同项目之前session共享
 2. 抽取出登录系统
